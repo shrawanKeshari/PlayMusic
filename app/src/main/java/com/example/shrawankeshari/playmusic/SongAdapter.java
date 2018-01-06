@@ -2,14 +2,23 @@ package com.example.shrawankeshari.playmusic;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.shrawankeshari.playmusic.Database.SongDataSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,17 +27,20 @@ import java.util.List;
  */
 public class SongAdapter extends ArrayAdapter<SongsField> {
 
+    //context object for getting the context of the activity
     Context context;
+
+    //list object for holding the song list
     List<SongsField> songsList;
 
-    public SongAdapter(Context context, int resource, List<SongsField> placeList) {
-        super(context, resource, placeList);
+    public SongAdapter(Context context, int resource, List<SongsField> songList) {
+        super(context, resource, songList);
         this.context = context;
-        this.songsList = placeList;
+        this.songsList = songList;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
             convertView = ((Activity) getContext()).getLayoutInflater()
                     .inflate(R.layout.item_list, parent, false);

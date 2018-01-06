@@ -1,6 +1,7 @@
 package com.example.shrawankeshari.playmusic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -9,12 +10,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
     List<SongsField> songs;
     SongDataSource dataSource;
 
-    //variable to check when activity start first and play song
-    int check = 1;
+    //variable for storing the current item selected in the list
+    String current_song;
 
-    //Variables for different views
+    //Objects for different views
     ProgressBar pb;
     private TextView tv_selected_track_name;
     private TextView tv_selected_track_artist;
@@ -50,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView im_control;
     private Toolbar tb;
     private EditText et_search_song;
-    private Button button_search;
+    private ImageView button_search;
     private LinearLayout linearLayout;
+    private ListView lv;
+    private CheckBox cb;
 
     //MediaPlayer class instance
     private MediaPlayer mediaPlayer;
@@ -65,15 +72,34 @@ public class MainActivity extends AppCompatActivity {
             new AudioManager.OnAudioFocusChangeListener() {
                 @Override
                 public void onAudioFocusChange(int focusChange) {
-                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
-                            focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
-                        mediaPlayer.pause();
-                        mediaPlayer.seekTo(0);
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+                        // Lost focus for a short time, so pause the music don't release the
+                        // media player because playback is likely to resume
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.pause();
+                            im_control.setImageResource(R.drawable.ic_play);
+                        }
                     } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                        mediaPlayer.start();
+                        // resume playback
+                        if (!mediaPlayer.isPlaying()) {
+                            mediaPlayer.start();
+                            im_control.setImageResource(R.drawable.ic_pause);
+                            mediaPlayer.setVolume(1.0f, 1.0f);
+                        }
                     } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                        mediaPlayer.pause();
-                        im_control.setImageResource(R.drawable.ic_play);
+                        // Lost focus for an unbounded amount of time, pause the music
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.pause();
+                            im_control.setImageResource(R.drawable.ic_play);
+                        }
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                        // Lost focus for a short time, so we can continue playing at an
+                        // low volume level
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.setVolume(0.1f, 0.1f);
+                        } else {
+                            mediaPlayer.pause();
+                        }
                     }
                 }
             };
@@ -88,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Initialize references to view and setting the visibility of progressBas to invisible
+        //Initialize references to views and setting the visibility of progressBas to invisible
         // which shows data is fetching from web
         pb = findViewById(R.id.progress_bar1);
         pb.setVisibility(View.INVISIBLE);
@@ -100,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         button_search = findViewById(R.id.search_button);
         linearLayout = findViewById(R.id.search_id);
         linearLayout.setVisibility(View.INVISIBLE);
+        lv = findViewById(R.id.list_view);
+        cb = findViewById(R.id.checkbox);
 
         //setting the OnClickListener on the control image responsible for showing play
         // pause button according to the state of music
@@ -107,7 +135,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                changePlayAndPause();
+                //if music is playing then pause it otherwise start the music and
+                // get the data source of the music
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    im_control.setImageResource(R.drawable.ic_play);
+                } else {
+                    mediaPlayer.start();
+                    try {
+                        mediaPlayer.setDataSource(current_song);
+                        mediaPlayer.prepareAsync();
+                    } catch (Exception e) {
+//                        Toast.makeText(MainActivity.this, "error occured while playing song press again",
+//                                Toast.LENGTH_LONG).show();
+                        im_control.setImageResource(R.drawable.ic_pause);
+                    }
+                }
             }
         });
 
@@ -119,6 +162,9 @@ public class MainActivity extends AppCompatActivity {
 
         audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
+        //initializing tasks variable for keep track of different tasks in current activity
+        tasks = new ArrayList<>();
+
         //setting up the onPreparedListener for MediaPlayer
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -127,14 +173,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //initializing tasks variable for keep track of different tasks in current activity
-        tasks = new ArrayList<>();
-
         //checking for the connectivity of internet (if true proceed for data fetching
         //otherwise display error message)
         if (isOnline()) {
+            //fetching data from web
             requestData(API_URL);
         } else {
+            Toolbar tb = findViewById(R.id.tool_track);
+            tb.setVisibility(View.INVISIBLE);
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
         }
 
@@ -179,9 +225,82 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            //listing all the available song on the web
+            case R.id.all_songs:
+                //make search layout visible and set the edittext to empty string
+                linearLayout.setVisibility(View.VISIBLE);
+                et_search_song.setText("");
+                //make the search button visible
+                button_search.setVisibility(View.VISIBLE);
+                songsList = dataSource.findAll();
+                displaySearchSong(songsList);
+                if(!isOnline()){
+                    Toast.makeText(this, "To listen music please turn on the internet connection",
+                            Toast.LENGTH_LONG).show();
+                }
+                return true;
+
+            //listing only favorite songs of the user
+            case R.id.favorite:
+                //make search layout visible and set the edittext to FAVORITE SONGS and make it non-focusable
+                linearLayout.setVisibility(View.VISIBLE);
+                et_search_song.setText("FAVORITE SONGS");
+                et_search_song.setFocusable(false);
+                //make search button invisible
+                button_search.setVisibility(View.INVISIBLE);
+                songs = dataSource.findFavorite();
+                displaySearchSong(songs);
+                if(!isOnline()){
+                    Toast.makeText(this, "To listen music please turn on the internet connection",
+                            Toast.LENGTH_LONG).show();
+                }
+                return true;
+
+            //listing the history of the user
+            case R.id.history:
+                //make search layout visible and set the edittext to FAVORITE SONGS and make it non-focusable
+                linearLayout.setVisibility(View.VISIBLE);
+                et_search_song.setText("HISTORY");
+                et_search_song.setFocusable(false);
+                //make search button invisible
+                button_search.setVisibility(View.INVISIBLE);
+                songs = dataSource.findHistory();
+                displaySearchSong(songs);
+                if(!isOnline()){
+                    Toast.makeText(this, "To listen music please turn on the internet connection",
+                            Toast.LENGTH_LONG).show();
+                }
+                return true;
+
+            //show the detail about me and my work
+            case R.id.portfolio:
+                Intent intent = new Intent(MainActivity.this, PortfolioActivity.class);
+                startActivity(intent);
+                return true;
+
+            //refresh the list to display the new songs which have added to the api
+            case R.id.action_refresh:
+                if(mediaPlayer.isPlaying()){
+                    mediaPlayer.pause();
+                    im_control.setImageResource(R.drawable.ic_play);
+                }
+                //checking for the connectivity of internet (if true proceed for data fetching
+                //otherwise display error message)
+                if (isOnline()) {
+                    //make layout visible & fill the edittext field with empty string
+                    linearLayout.setVisibility(View.VISIBLE);
+                    et_search_song.setText("");
+                    button_search.setVisibility(View.VISIBLE);
+                    Toolbar tb = findViewById(R.id.tool_track);
+                    tb.setVisibility(View.VISIBLE);
+
+                    //fetching data from web
+                    requestData(API_URL);
+                } else {
+                    Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -196,20 +315,6 @@ public class MainActivity extends AppCompatActivity {
             im_control.setImageResource(R.drawable.ic_play);
         } else {
             mediaPlayer.start();
-
-            //check when user start activity fist time and enable play button with first
-            // selected song
-            if (check == 1) {
-
-                try {
-                    mediaPlayer.setDataSource(songsList.get(0).getSong_url());
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                check++;
-            }
             //displaying the pause button
             im_control.setImageResource(R.drawable.ic_pause);
         }
@@ -239,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
     //method to display the search result
     private void displaySearchSong(final List<SongsField> songs) {
         ArrayAdapter<SongsField> adapter = new SongAdapter(this, R.layout.item_list, songs);
-        ListView lv = findViewById(R.id.list_view);
+
 
         //populating the list to list view for display
         lv.setAdapter(adapter);
@@ -250,6 +355,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SongsField sf = songs.get(i);
+
+                if(!dataSource.findInHistory(sf.getSongId())){
+                    dataSource.addToHistory(sf, System.currentTimeMillis());
+                }else{
+                    dataSource.updateToHistory(sf,System.currentTimeMillis());
+                }
 
                 //displaying the item on list view
                 displayList(sf);
@@ -323,13 +434,22 @@ public class MainActivity extends AppCompatActivity {
     private void displaySong() {
 
         ArrayAdapter<SongsField> adapter = new SongAdapter(this, R.layout.item_list, songsList);
-        ListView lv = findViewById(R.id.list_view);
 
         //populating the list to list view for display
         lv.setAdapter(adapter);
 
-        //initially displaying the first song with play button
-        displayList(songsList.get(0));
+        //find the history of the user
+        List<SongsField> music = dataSource.findHistory();;
+
+        //if no history then populate the first song of the list else populate the last songs played
+        //by the user
+        if(music.size() <= 0){
+            //initially displaying the first song with play button
+            displayList(songs.get(0));
+        }else{
+            //display the lasted played song
+            displayList(music.get(0));
+        }
 
         //initially setting the play pause control image to play button
         im_control.setImageResource(R.drawable.ic_play);
@@ -340,6 +460,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SongsField sf = songsList.get(i);
+
+                if(!dataSource.findInHistory(sf.getSongId())){
+                    dataSource.addToHistory(sf, System.currentTimeMillis());
+                }else{
+                    dataSource.updateToHistory(sf,System.currentTimeMillis());
+                }
 
                 //displaying the item on list view
                 displayList(sf);
@@ -352,13 +478,50 @@ public class MainActivity extends AppCompatActivity {
 
     //This method is used to display data on the list view and also responsible for
     // the showing the data of selected song at the bottom of the screen
-    private void displayList(SongsField sf) {
+    private void displayList(final SongsField sf) {
         tv_selected_track_name.setText(sf.getSong_name());
         tv_selected_track_artist.setText(sf.getSong_artists());
 
         Glide.with(im_selected_track_image.getContext())
                 .load(sf.getSong_image())
                 .into(im_selected_track_image);
+
+        //get the url of the current selected song
+        current_song = sf.getSong_url();
+
+        //if song is in the favorite list the check the checkbox otherwise be it unchecked
+        if (dataSource.findSongFavorite(sf.getSongId())) {
+            cb.setChecked(true);
+        } else {
+            cb.setChecked(false);
+        }
+
+        //setting up the checkbox onClickListener
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if checkbox is checked
+                if (cb.isChecked()) {
+                    //add the current song to favorite list and display the toast message
+                    if (dataSource.addToFavorite(sf)) {
+                        Toast.makeText(MainActivity.this, "Added to favorite",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "error occurred while adding",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    //remove the current song from favorite and display the toast message
+                    if (dataSource.removeFavorite(sf)) {
+                        Toast.makeText(MainActivity.this, "remove from favorite",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "error occurred while removing",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
     //get the focus of audioManager and play the song
@@ -382,7 +545,9 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.setDataSource(sf.getSong_url());
                 mediaPlayer.prepareAsync();
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                Toast.makeText(this, "error occured while playing song prees again",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -392,19 +557,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        //open the database for read write operation
         dataSource.open();
 
+        //request for the audio focus
         int result = audioManager.requestAudioFocus(mOnAudioFocusChangeListener,
                 AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
 
-
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            im_control.setImageResource(R.drawable.ic_pause);
-            mediaPlayer.start();
+        //check if user is online or not
+        if (isOnline()) {
+            //if it get the requested audio focus then start playing the music
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                if (mediaPlayer.isPlaying()) {
+                    im_control.setImageResource(R.drawable.ic_pause);
+                    mediaPlayer.start();
+                }
+            }
         }
     }
 
-    //when app is destroyed by the system
+    //when app is destroyed by the system, release the media player
     @Override
     protected void onDestroy() {
         super.onDestroy();

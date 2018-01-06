@@ -18,18 +18,25 @@ public class HttpManager {
         BufferedReader bf = null;
 
         try {
+            //converting the string variable into the URL object
             URL url = new URL(uri);
+
+            //getting the Http connection
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             StringBuilder sb = new StringBuilder();
+
+            //bufferedreader for reading the data fetched from the web
             bf = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             String data = null;
 
+            //reading the data and inserting it into the string variable
             while ((data = bf.readLine()) != null) {
                 sb.append(data).append("\n");
             }
 
+            //returning the collected data
             return sb.toString();
 
         } catch (Exception e) {

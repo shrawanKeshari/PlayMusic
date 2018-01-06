@@ -9,32 +9,48 @@
     tools:context="com.example.shrawankeshari.playmusic.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <!--layout populating the EditText view and ImageView in horizontal orientation-->
     <LinearLayout
         android:id="@+id/search_id"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
         android:orientation="horizontal">
 
+        <!--view for entering the string to be searched int the song list-->
         <EditText
             android:id="@+id/search_song"
-            android:layout_width="280dp"
+            android:layout_width="260dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:hint="Search (by name)" />
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:hint="Search (by name)"
+            android:textStyle="bold"/>
 
-        <Button
+        <!--view for displaying the search icon to search the song-->
+        <ImageView
             android:id="@+id/search_button"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:text="Search" />
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_search" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
     </LinearLayout>
 
-
+    <!--layout  populating the ListView and progressBar-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="100">
 
+        <!--view for displaying the list of songs fetched from web or database-->
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
@@ -42,6 +58,7 @@
 
         </ListView>
 
+        <!--view for displaying the progress of the data fetching from the web-->
         <ProgressBar
             android:id="@+id/progress_bar1"
             android:layout_width="wrap_content"
@@ -51,32 +68,39 @@
 
     </RelativeLayout>
 
+    <!--toolbar for populating the cover image, songs name, artist name,
+    play-pause button and checkbox-->
     <android.support.v7.widget.Toolbar
 
         android:id="@+id/tool_track"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_margin="10dp"
         android:background="#ffffff"
         android:theme="@style/AppTheme">
 
+        <!--view for displaying the cover image of the song-->
         <ImageView
             android:id="@+id/select_track_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp" />
 
+        <!--layout populating the two TextView into vertical orientation-->
         <LinearLayout
-            android:layout_width="180dp"
+            android:layout_width="140dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:orientation="vertical">
 
+            <!--view for displaying the cover name of the song-->
             <TextView
                 android:id="@+id/select_track_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold" />
 
+            <!--view for displaying the cover artist name of the song-->
             <TextView
                 android:id="@+id/select_track_artist"
                 android:layout_width="match_parent"
@@ -84,12 +108,21 @@
 
         </LinearLayout>
 
+        <!--view for displaying the play-pause button according the music state
+        (i.e. playing or paused)-->
         <ImageView
             android:id="@+id/control"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="10dp" />
 
+        <!--view for holding the state which show whether the song is added to favorite or not.
+        If it is checked means it is added to favorite list & if is unchecked means not added-->
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp" />
 
     </android.support.v7.widget.Toolbar>
 

@@ -2,9 +2,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.shrawankeshari.playmusic.MainActivity">
+
+    <!--this item for refreshing the display and fetching the data from web to see if their
+    is update in songs or not-->
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_refresh"
+        android:orderInCategory="0"
+        app:showAsAction="always"
+        android:title="refresh_display"
+        android:icon="@drawable/ic_autorenew">
+    </item>
+
+    <!--All Songs item for displaying the list of all available songs-->
+    <item
+        android:id="@+id/all_songs"
+        android:orderInCategory="0"
+        android:title="ALL"
+        app:showAsAction="always" />
+
+    <!--favorite item for displaying the list of favorite songs-->
+    <item
+        android:id="@+id/favorite"
+        android:orderInCategory="0"
+        android:title="FAVORITE"
+        app:showAsAction="ifRoom" />
+
+    <!--history item for displaying the list of history of songs listen by user-->
+    <item
+        android:id="@+id/history"
+        android:orderInCategory="0"
+        android:title="HISTORY" />
+
+    <!--Portfolio item for displaying the detail about me and my work-->
+    <item
+        android:id="@+id/portfolio"
+        android:orderInCategory="0"
+        android:title="PORTFOLIO" />
+
 </menu>

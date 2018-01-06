@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">PlayMusic</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_portfolio">PortfolioActivity</string>
+    <string name="my_name">SHRAWAN KUMAR KESHARI</string>
+    <string name="designation">Software Engineer, Paytm</string>
+    <string name="Education">Educational Qualification: B.Tech from AKTU....see more</string>
+    <string name="Technical">Technical Skill: C, Core JAVA, GIT ....see more</string>
+    <string name="AndroidWork">Android Work: Developing Android application since May 2016 from
+        learning perspective....see more</string>
+    <string name="email">shrawankeshari19@gmail.com</string>
+    <string name="Mobno">+91-8419818746</string>
 </resources>
