@@ -10,16 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class StreamMusicActivity extends AppCompatActivity {
 
     //Defining the variables
     List<MyTask> tasks;
@@ -146,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         mediaPlayer.setDataSource(current_song);
                         mediaPlayer.prepareAsync();
                     } catch (Exception e) {
-//                        Toast.makeText(MainActivity.this, "error occured while playing song press again",
+//                        Toast.makeText(StreamMusicActivity.this, "error occured while playing song press again",
 //                                Toast.LENGTH_LONG).show();
                         im_control.setImageResource(R.drawable.ic_pause);
                     }
@@ -275,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
             //show the detail about me and my work
             case R.id.portfolio:
-                Intent intent = new Intent(MainActivity.this, PortfolioActivity.class);
+                Intent intent = new Intent(StreamMusicActivity.this, PortfolioActivity.class);
                 startActivity(intent);
                 return true;
 
@@ -407,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
 
             //if list obtain from the web is empty display the error msg
             if (sf == null) {
-                Toast.makeText(MainActivity.this, "Error in fetching the songs",
+                Toast.makeText(StreamMusicActivity.this, "Error in fetching the songs",
                         Toast.LENGTH_LONG).show();
 
                 return;
@@ -504,19 +500,19 @@ public class MainActivity extends AppCompatActivity {
                 if (cb.isChecked()) {
                     //add the current song to favorite list and display the toast message
                     if (dataSource.addToFavorite(sf)) {
-                        Toast.makeText(MainActivity.this, "Added to favorite",
+                        Toast.makeText(StreamMusicActivity.this, "Added to favorite",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this, "error occurred while adding",
+                        Toast.makeText(StreamMusicActivity.this, "error occurred while adding",
                                 Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     //remove the current song from favorite and display the toast message
                     if (dataSource.removeFavorite(sf)) {
-                        Toast.makeText(MainActivity.this, "remove from favorite",
+                        Toast.makeText(StreamMusicActivity.this, "remove from favorite",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this, "error occurred while removing",
+                        Toast.makeText(StreamMusicActivity.this, "error occurred while removing",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }

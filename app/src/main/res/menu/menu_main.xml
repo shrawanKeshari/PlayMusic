@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.shrawankeshari.playmusic.MainActivity">
+    tools:context="com.example.shrawankeshari.playmusic.StreamMusicActivity">
 
     <!--this item for refreshing the display and fetching the data from web to see if their
     is update in songs or not-->
