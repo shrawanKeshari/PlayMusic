@@ -3,6 +3,8 @@
     package="com.example.shrawankeshari.playmusic">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -22,13 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".StreamMusicActivity"
             android:label="@string/app_name"
+            android:parentActivityName=".OfflineMusicActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.shrawankeshari.playmusic.OfflineMusicActivity" />
         </activity>
-
         <activity
             android:name=".PortfolioActivity"
             android:label="@string/title_activity_portfolio"
@@ -37,6 +41,12 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.shrawankeshari.playmusic.StreamMusicActivity" />
+        </activity>
+        <activity
+            android:name=".OfflineMusicActivity"
+            android:label="@string/title_activity_offline_music"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

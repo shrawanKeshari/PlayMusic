@@ -7,11 +7,11 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.shrawankeshari.playmusic.StreamMusicActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_online">
 
     <!--layout populating the EditText view and ImageView in horizontal orientation-->
     <LinearLayout
-        android:id="@+id/search_id"
+        android:id="@+id/search_id_online"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
@@ -19,26 +19,21 @@
 
         <!--view for entering the string to be searched int the song list-->
         <EditText
-            android:id="@+id/search_song"
+            android:id="@+id/search_song_online"
             android:layout_width="260dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:background="@android:color/transparent"
             android:hint="Search (by name)"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <!--view for displaying the search icon to search the song-->
         <ImageView
-            android:id="@+id/search_button"
+            android:id="@+id/search_button_online"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:src="@drawable/ic_search" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
 
     </LinearLayout>
 
@@ -52,7 +47,7 @@
 
         <!--view for displaying the list of songs fetched from web or database-->
         <ListView
-            android:id="@+id/list_view"
+            android:id="@+id/list_view_online"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -60,7 +55,7 @@
 
         <!--view for displaying the progress of the data fetching from the web-->
         <ProgressBar
-            android:id="@+id/progress_bar1"
+            android:id="@+id/progress_bar_online"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -81,7 +76,7 @@
 
         <!--view for displaying the cover image of the song-->
         <ImageView
-            android:id="@+id/select_track_image"
+            android:id="@+id/select_track_image_online"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="10dp" />
@@ -95,14 +90,14 @@
 
             <!--view for displaying the cover name of the song-->
             <TextView
-                android:id="@+id/select_track_name"
+                android:id="@+id/select_track_name_online"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold" />
 
             <!--view for displaying the cover artist name of the song-->
             <TextView
-                android:id="@+id/select_track_artist"
+                android:id="@+id/select_track_artist_online"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -111,7 +106,7 @@
         <!--view for displaying the play-pause button according the music state
         (i.e. playing or paused)-->
         <ImageView
-            android:id="@+id/control"
+            android:id="@+id/control_online"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="10dp" />
@@ -119,7 +114,7 @@
         <!--view for holding the state which show whether the song is added to favorite or not.
         If it is checked means it is added to favorite list & if is unchecked means not added-->
         <CheckBox
-            android:id="@+id/checkbox"
+            android:id="@+id/checkbox_online"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp" />

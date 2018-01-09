@@ -7,36 +7,44 @@
     is update in songs or not-->
     <item
         android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_autorenew"
         android:orderInCategory="0"
-        app:showAsAction="always"
-        android:title="refresh_display"
-        android:icon="@drawable/ic_autorenew">
-    </item>
+        android:title="@string/refresh_display"
+        app:showAsAction="always" />
 
     <!--All Songs item for displaying the list of all available songs-->
     <item
         android:id="@+id/all_songs"
         android:orderInCategory="0"
-        android:title="ALL"
+        android:title="@string/all"
         app:showAsAction="always" />
 
     <!--favorite item for displaying the list of favorite songs-->
     <item
         android:id="@+id/favorite"
         android:orderInCategory="0"
-        android:title="FAVORITE"
+        android:title="@string/favorite"
         app:showAsAction="ifRoom" />
 
     <!--history item for displaying the list of history of songs listen by user-->
     <item
         android:id="@+id/history"
         android:orderInCategory="0"
-        android:title="HISTORY" />
+        android:title="HISTORY"
+        app:showAsAction="never" />
 
     <!--Portfolio item for displaying the detail about me and my work-->
     <item
         android:id="@+id/portfolio"
         android:orderInCategory="0"
-        android:title="PORTFOLIO" />
+        android:title="@string/portfolio"
+        app:showAsAction="never" />
+
+    <!--activity display the list songs available on the phone memory-->
+    <item
+        android:id="@+id/downloadedMusic"
+        android:orderInCategory="100"
+        android:title="@string/offline_music"
+        app:showAsAction="never" />
 
 </menu>

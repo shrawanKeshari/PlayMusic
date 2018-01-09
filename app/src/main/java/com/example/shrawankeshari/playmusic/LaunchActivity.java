@@ -24,7 +24,7 @@ public class LaunchActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(LaunchActivity.this,
-                        StreamMusicActivity.class);
+                        OfflineMusicActivity.class);
                 startActivity(intent);
                 finish();
             }

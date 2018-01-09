@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.shrawankeshari.downloadmanager.MainActivity">
+
+    <!--option to user to share music with other person via WhatsApp, Bluetooth etc-->
+    <item
+        android:id="@+id/share"
+        android:orderInCategory="100"
+        android:title="@string/share"
+        app:showAsAction="always" />
+
+    <!--option to user to share music on Facebook-->
+    <item
+        android:id="@+id/fb_share"
+        android:orderInCategory="100"
+        android:title="@string/share_on_facebook"
+        app:showAsAction="never" />
+
+    <!--activity display the list songs fetched from the web-->
+    <item
+        android:id="@+id/online_music"
+        android:orderInCategory="100"
+        android:title="@string/stream_online"
+        app:showAsAction="never" />
+</menu>

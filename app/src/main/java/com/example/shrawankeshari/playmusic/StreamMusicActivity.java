@@ -106,24 +106,26 @@ public class StreamMusicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_online);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //Initialize references to views and setting the visibility of progressBas to invisible
         // which shows data is fetching from web
-        pb = findViewById(R.id.progress_bar1);
+        pb = findViewById(R.id.progress_bar_online);
         pb.setVisibility(View.INVISIBLE);
-        tv_selected_track_name = findViewById(R.id.select_track_name);
-        tv_selected_track_artist = findViewById(R.id.select_track_artist);
-        im_selected_track_image = findViewById(R.id.select_track_image);
-        im_control = findViewById(R.id.control);
-        et_search_song = findViewById(R.id.search_song);
-        button_search = findViewById(R.id.search_button);
-        linearLayout = findViewById(R.id.search_id);
+        tv_selected_track_name = findViewById(R.id.select_track_name_online);
+        tv_selected_track_artist = findViewById(R.id.select_track_artist_online);
+        im_selected_track_image = findViewById(R.id.select_track_image_online);
+        im_control = findViewById(R.id.control_online);
+        et_search_song = findViewById(R.id.search_song_online);
+        button_search = findViewById(R.id.search_button_online);
+        linearLayout = findViewById(R.id.search_id_online);
         linearLayout.setVisibility(View.INVISIBLE);
-        lv = findViewById(R.id.list_view);
-        cb = findViewById(R.id.checkbox);
+        lv = findViewById(R.id.list_view_online);
+        cb = findViewById(R.id.checkbox_online);
 
         //setting the OnClickListener on the control image responsible for showing play
         // pause button according to the state of music
@@ -210,7 +212,7 @@ public class StreamMusicActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_online, menu);
         return true;
     }
 
@@ -231,7 +233,7 @@ public class StreamMusicActivity extends AppCompatActivity {
                 button_search.setVisibility(View.VISIBLE);
                 songsList = dataSource.findAll();
                 displaySearchSong(songsList);
-                if(!isOnline()){
+                if (!isOnline()) {
                     Toast.makeText(this, "To listen music please turn on the internet connection",
                             Toast.LENGTH_LONG).show();
                 }
@@ -247,7 +249,7 @@ public class StreamMusicActivity extends AppCompatActivity {
                 button_search.setVisibility(View.INVISIBLE);
                 songs = dataSource.findFavorite();
                 displaySearchSong(songs);
-                if(!isOnline()){
+                if (!isOnline()) {
                     Toast.makeText(this, "To listen music please turn on the internet connection",
                             Toast.LENGTH_LONG).show();
                 }
@@ -263,7 +265,7 @@ public class StreamMusicActivity extends AppCompatActivity {
                 button_search.setVisibility(View.INVISIBLE);
                 songs = dataSource.findHistory();
                 displaySearchSong(songs);
-                if(!isOnline()){
+                if (!isOnline()) {
                     Toast.makeText(this, "To listen music please turn on the internet connection",
                             Toast.LENGTH_LONG).show();
                 }
@@ -277,7 +279,7 @@ public class StreamMusicActivity extends AppCompatActivity {
 
             //refresh the list to display the new songs which have added to the api
             case R.id.action_refresh:
-                if(mediaPlayer.isPlaying()){
+                if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                     im_control.setImageResource(R.drawable.ic_play);
                 }
@@ -296,6 +298,11 @@ public class StreamMusicActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 }
+                return true;
+
+            case R.id.downloadedMusic:
+                Intent offlineIntent = new Intent(StreamMusicActivity.this, OfflineMusicActivity.class);
+                startActivity(offlineIntent);
                 return true;
         }
 
@@ -339,7 +346,7 @@ public class StreamMusicActivity extends AppCompatActivity {
 
     //method to display the search result
     private void displaySearchSong(final List<SongsField> songs) {
-        ArrayAdapter<SongsField> adapter = new SongAdapter(this, R.layout.item_list, songs);
+        ArrayAdapter<SongsField> adapter = new SongAdapter(this, R.layout.item_list_online, songs);
 
 
         //populating the list to list view for display
@@ -352,10 +359,10 @@ public class StreamMusicActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SongsField sf = songs.get(i);
 
-                if(!dataSource.findInHistory(sf.getSongId())){
+                if (!dataSource.findInHistory(sf.getSongId())) {
                     dataSource.addToHistory(sf, System.currentTimeMillis());
-                }else{
-                    dataSource.updateToHistory(sf,System.currentTimeMillis());
+                } else {
+                    dataSource.updateToHistory(sf, System.currentTimeMillis());
                 }
 
                 //displaying the item on list view
@@ -429,20 +436,21 @@ public class StreamMusicActivity extends AppCompatActivity {
     //This method is used to display the song lis obtain from the web
     private void displaySong() {
 
-        ArrayAdapter<SongsField> adapter = new SongAdapter(this, R.layout.item_list, songsList);
+        ArrayAdapter<SongsField> adapter = new SongAdapter(this, R.layout.item_list_online, songsList);
 
         //populating the list to list view for display
         lv.setAdapter(adapter);
 
         //find the history of the user
-        List<SongsField> music = dataSource.findHistory();;
+        List<SongsField> music = dataSource.findHistory();
+        ;
 
         //if no history then populate the first song of the list else populate the last songs played
         //by the user
-        if(music.size() <= 0){
+        if (music.size() <= 0) {
             //initially displaying the first song with play button
             displayList(songs.get(0));
-        }else{
+        } else {
             //display the lasted played song
             displayList(music.get(0));
         }
@@ -457,10 +465,10 @@ public class StreamMusicActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SongsField sf = songsList.get(i);
 
-                if(!dataSource.findInHistory(sf.getSongId())){
+                if (!dataSource.findInHistory(sf.getSongId())) {
                     dataSource.addToHistory(sf, System.currentTimeMillis());
-                }else{
-                    dataSource.updateToHistory(sf,System.currentTimeMillis());
+                } else {
+                    dataSource.updateToHistory(sf, System.currentTimeMillis());
                 }
 
                 //displaying the item on list view
