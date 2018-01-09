@@ -300,6 +300,7 @@ public class StreamMusicActivity extends AppCompatActivity {
                 }
                 return true;
 
+            //show the downloaded song's on local storage of user device
             case R.id.downloadedMusic:
                 Intent offlineIntent = new Intent(StreamMusicActivity.this, OfflineMusicActivity.class);
                 startActivity(offlineIntent);
