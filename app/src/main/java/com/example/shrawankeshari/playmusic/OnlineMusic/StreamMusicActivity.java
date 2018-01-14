@@ -1,4 +1,4 @@
-package com.example.shrawankeshari.playmusic;
+package com.example.shrawankeshari.playmusic.OnlineMusic;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +27,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.shrawankeshari.playmusic.Database.SongDBOpenHelper;
 import com.example.shrawankeshari.playmusic.Database.SongDataSource;
+import com.example.shrawankeshari.playmusic.OfflineMusic.OfflineMusicActivity;
+import com.example.shrawankeshari.playmusic.PortfolioActivity;
+import com.example.shrawankeshari.playmusic.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

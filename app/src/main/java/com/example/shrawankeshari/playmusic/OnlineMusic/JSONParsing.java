@@ -1,4 +1,6 @@
-package com.example.shrawankeshari.playmusic;
+package com.example.shrawankeshari.playmusic.OnlineMusic;
+
+import com.example.shrawankeshari.playmusic.OnlineMusic.SongsField;
 
 import org.json.JSONArray;
 import org.json.JSONException;

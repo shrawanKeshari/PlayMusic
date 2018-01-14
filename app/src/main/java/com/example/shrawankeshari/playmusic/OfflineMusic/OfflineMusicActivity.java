@@ -1,13 +1,10 @@
-package com.example.shrawankeshari.playmusic;
+package com.example.shrawankeshari.playmusic.OfflineMusic;
 
 import android.Manifest;
 import android.app.DownloadManager;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.AudioManager;
@@ -18,13 +15,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +29,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.shrawankeshari.playmusic.Facebook.FacebookLoginActivity;
+import com.example.shrawankeshari.playmusic.R;
+import com.example.shrawankeshari.playmusic.OnlineMusic.StreamMusicActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;

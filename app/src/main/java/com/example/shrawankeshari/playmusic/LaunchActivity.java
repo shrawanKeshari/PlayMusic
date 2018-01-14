@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.shrawankeshari.playmusic.OfflineMusic.OfflineMusicActivity;
+
 /**
  * Created by shrawankeshari on 7/1/18.
  * Class for implementing splash screen and after that open the activity displaying song's fetched

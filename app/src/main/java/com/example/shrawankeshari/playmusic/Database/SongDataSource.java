@@ -5,9 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.example.shrawankeshari.playmusic.SongsField;
+import com.example.shrawankeshari.playmusic.OnlineMusic.SongsField;
 
 import java.util.ArrayList;
 import java.util.List;

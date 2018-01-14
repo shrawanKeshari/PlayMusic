@@ -1,4 +1,4 @@
-package com.example.shrawankeshari.playmusic;
+package com.example.shrawankeshari.playmusic.OfflineMusic;
 
 
 import android.app.Activity;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.shrawankeshari.playmusic.OfflineMusic.MusicField;
+import com.example.shrawankeshari.playmusic.R;
 
 import java.util.List;
 
