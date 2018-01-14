@@ -21,4 +21,8 @@
     <string name="share">Share</string>
     <string name="share_on_facebook">Share on Facebook</string>
     <string name="stream_online">Stream Online</string>
+    <string name="facebook_app_id">212659572635873</string>
+    <string name="fb_login_protocol_scheme">fb212659572635873</string>
+    <string name="title_activity_facebook">FacebookActivity</string>
+    <string name="logout">LOGOUT</string>
 </resources>

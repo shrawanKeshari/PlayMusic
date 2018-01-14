@@ -35,6 +35,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.shrawankeshari.playmusic.Facebook.FacebookLoginActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -119,32 +120,6 @@ public class OfflineMusicActivity extends AppCompatActivity {
                 }
             };
 
-    BroadcastReceiver onComplete = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            long refId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-
-            Log.i("TAG", String.valueOf(refId));
-
-            list.remove(refId);
-
-            if (list.isEmpty()) {
-                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-                        OfflineMusicActivity.this, "Hi").setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Music mp3").setContentText("All download completed");
-
-                NotificationManager notificationManager = (NotificationManager) getSystemService(
-                        Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(455, notificationBuilder.build());
-
-            }
-
-            retrieveSong();
-
-            displaySong();
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,8 +134,6 @@ public class OfflineMusicActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-
-        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
         mediaMetadataRetriever = new MediaMetadataRetriever();
 
@@ -252,30 +225,6 @@ public class OfflineMusicActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        download.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                list.clear();
-//                DownloadManager.Request request = new DownloadManager.Request(file_uri);
-//                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
-//                        DownloadManager.Request.NETWORK_MOBILE);
-//                request.setAllowedOverRoaming(false);
-//                request.setTitle("Download Music");
-//                request.setDescription("Songs download");
-//                request.setVisibleInDownloadsUi(true);
-//                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-//                        "MySongs.mp3");
-//
-//                request.allowScanningByMediaScanner();
-//
-//                referenceId = downloadManager.enqueue(request);
-//
-//                Log.i("TAG", String.valueOf(referenceId));
-//
-//                list.add(referenceId);
-//            }
-//        });
     }
 
     @Override
@@ -302,6 +251,9 @@ public class OfflineMusicActivity extends AppCompatActivity {
                 return true;
 
             case R.id.fb_share:
+                Intent facebookIntent = new Intent(OfflineMusicActivity.this,
+                        FacebookLoginActivity.class);
+                startActivity(facebookIntent);
                 return true;
 
             case R.id.online_music:
@@ -316,8 +268,6 @@ public class OfflineMusicActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        unregisterReceiver(onComplete);
 
         if (mediaPlayer != null) {
             mediaPlayer.release();
