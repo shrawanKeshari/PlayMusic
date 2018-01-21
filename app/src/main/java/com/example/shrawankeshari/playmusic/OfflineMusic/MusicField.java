@@ -1,10 +1,14 @@
 package com.example.shrawankeshari.playmusic.OfflineMusic;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 /**
  * Created by shrawankeshari on 23/12/17.
  */
 
-public class MusicField {
+public class MusicField implements Parcelable {
 
     private String song_title;
     private byte[] song_image;
@@ -57,7 +61,54 @@ public class MusicField {
         this.whenNoImage = whenNoImage;
     }
 
-    public int getWhenNoImage(){
+    public int getWhenNoImage() {
         return whenNoImage;
     }
+
+    public MusicField() {
+
+    }
+
+    public MusicField(Parcel parcel) {
+        Log.i("MUSIC", "Parcel Constructor");
+
+        song_title = parcel.readString();
+        song_image = parcel.createByteArray();
+        song_path = parcel.readString();
+        song_artist = parcel.readString();
+        song_duration = parcel.readString();
+        whenNoImage = parcel.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        Log.i("MUSIC", "writeToParcel");
+
+        parcel.writeString(song_title);
+        parcel.writeByteArray(song_image);
+        parcel.writeString(song_path);
+        parcel.writeString(song_artist);
+        parcel.writeString(song_duration);
+        parcel.writeInt(whenNoImage);
+    }
+
+    public static final Parcelable.Creator<MusicField> CREATOR = new Parcelable.Creator<MusicField>() {
+
+        @Override
+        public MusicField createFromParcel(Parcel parcel) {
+            Log.i("MUSIC", "createFromParcel");
+            return new MusicField(parcel);
+        }
+
+        @Override
+        public MusicField[] newArray(int i) {
+            Log.i("MUSIC", "newArray");
+            return new MusicField[i];
+        }
+    };
 }

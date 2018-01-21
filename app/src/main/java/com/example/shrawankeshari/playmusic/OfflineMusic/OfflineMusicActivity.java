@@ -8,16 +8,19 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.AudioManager;
+import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +35,10 @@ import com.example.shrawankeshari.playmusic.Facebook.FacebookLoginActivity;
 import com.example.shrawankeshari.playmusic.R;
 import com.example.shrawankeshari.playmusic.OnlineMusic.StreamMusicActivity;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -413,6 +419,7 @@ public class OfflineMusicActivity extends AppCompatActivity {
                     .into(im_selected_track_image);
         }
 
+        Log.i("SONG_PATH", mf.getSong_path());
         current_song = mf.getSong_path();
     }
 

@@ -19,6 +19,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     LoginButton loginButton;
     CallbackManager callbackManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
