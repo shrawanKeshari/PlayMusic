@@ -44,6 +44,8 @@ import java.util.List;
 
 public class OfflineMusicActivity extends AppCompatActivity {
 
+    public static final String EXTRA_MESSAGE = "com.example.shrawankeshari.playmusic.OfflineMusic";
+
     //    private Button download;
     private ListView lv;
     private ImageView im_selected_track_image;
@@ -254,6 +256,7 @@ public class OfflineMusicActivity extends AppCompatActivity {
             case R.id.fb_share:
                 Intent facebookIntent = new Intent(OfflineMusicActivity.this,
                         FacebookLoginActivity.class);
+                facebookIntent.putExtra(EXTRA_MESSAGE, shareMusic);
                 startActivity(facebookIntent);
                 return true;
 

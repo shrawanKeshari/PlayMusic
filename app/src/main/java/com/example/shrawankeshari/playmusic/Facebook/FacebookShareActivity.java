@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.shrawankeshari.playmusic.OfflineMusic.MusicField;
+import com.example.shrawankeshari.playmusic.OfflineMusic.OfflineMusicActivity;
 import com.example.shrawankeshari.playmusic.R;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
@@ -21,15 +24,21 @@ public class FacebookShareActivity extends AppCompatActivity {
     ProfileTracker profileTracker;
     ImageView profilePic;
     TextView profileName, facebookId;
+    EditText fbShareText;
+    MusicField musicField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_share);
 
+        Bundle bundle = getIntent().getExtras();
+        musicField = bundle.getParcelable(OfflineMusicActivity.EXTRA_MESSAGE);
+
         profilePic = findViewById(R.id.profile_image);
         facebookId = findViewById(R.id.facebook_id);
         profileName = findViewById(R.id.facebook_name);
+        fbShareText = findViewById(R.id.fb_share_text);
 
         profileTracker = new ProfileTracker() {
             @Override
@@ -48,6 +57,12 @@ public class FacebookShareActivity extends AppCompatActivity {
                 Profile.fetchProfileForCurrentAccessToken();
             }
         }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(musicField.getSong_title()).append("\n").append(musicField.getSong_artist())
+                .append("\n").append(musicField.getSong_duration());
+
+        fbShareText.setText(sb);
     }
 
     @Override

@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:background="@android:color/transparent"
-            android:hint="Search (by name)"
+            android:hint="@string/search_by_name"
             android:textStyle="bold" />
 
         <!--view for displaying the search icon to search the song-->

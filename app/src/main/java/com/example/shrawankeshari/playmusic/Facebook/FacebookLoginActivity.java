@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.example.shrawankeshari.playmusic.OfflineMusic.MusicField;
+import com.example.shrawankeshari.playmusic.OfflineMusic.OfflineMusicActivity;
 import com.example.shrawankeshari.playmusic.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -18,7 +20,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
     LoginButton loginButton;
     CallbackManager callbackManager;
-
+    MusicField musicField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Bundle bundle = getIntent().getExtras();
+        musicField = bundle.getParcelable(OfflineMusicActivity.EXTRA_MESSAGE);
 
         loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions("email");
@@ -69,6 +74,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private void launchAccountActivity() {
         Intent intent = new Intent(FacebookLoginActivity.this,
                 FacebookShareActivity.class);
+        intent.putExtra(OfflineMusicActivity.EXTRA_MESSAGE, musicField);
         startActivity(intent);
         finish();
     }

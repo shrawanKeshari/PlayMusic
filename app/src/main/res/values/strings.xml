@@ -25,4 +25,8 @@
     <string name="fb_login_protocol_scheme">fb212659572635873</string>
     <string name="title_activity_facebook">FacebookActivity</string>
     <string name="logout">LOGOUT</string>
+    <string name="facebook_id">Facebook ID</string>
+    <string name="name">Name</string>
+    <string name="share_text">Share Text</string>
+    <string name="search_by_name">Search (by name)</string>
 </resources>
