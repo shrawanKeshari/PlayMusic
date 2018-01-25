@@ -4,28 +4,56 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.shrawankeshari.playmusic.OfflineMusic.MusicField;
 import com.example.shrawankeshari.playmusic.OfflineMusic.OfflineMusicActivity;
 import com.example.shrawankeshari.playmusic.R;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class FacebookShareActivity extends AppCompatActivity {
 
     ProfileTracker profileTracker;
     ImageView profilePic;
-    TextView profileName, facebookId;
+    TextView profileName, facebookId, noItemView;
     EditText fbShareText;
+    Button shareButton;
     MusicField musicField;
+    ListView fbListView;
+    String check_permission;
+    List<String> postId;
+
+    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +67,12 @@ public class FacebookShareActivity extends AppCompatActivity {
         facebookId = findViewById(R.id.facebook_id);
         profileName = findViewById(R.id.facebook_name);
         fbShareText = findViewById(R.id.fb_share_text);
+        shareButton = findViewById(R.id.share_button);
+        fbListView = findViewById(R.id.fb_list_view);
+        noItemView = findViewById(R.id.no_item_view);
+        postId = new ArrayList<>();
+
+        callbackManager = CallbackManager.Factory.create();
 
         profileTracker = new ProfileTracker() {
             @Override
@@ -59,10 +93,92 @@ public class FacebookShareActivity extends AppCompatActivity {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(musicField.getSong_title()).append("\n").append(musicField.getSong_artist())
-                .append("\n").append(musicField.getSong_duration());
+        if (musicField != null) {
+            sb.append("Listening to ").append(musicField.getSong_title()).append("\n")
+                    .append(musicField.getSong_artist());
+        } else {
+            sb.append("first select a song from list to share");
+        }
 
         fbShareText.setText(sb);
+        fbShareText.setSelection(fbShareText.getText().length());
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                check_permission = "publish_actions";
+
+                Set permissions = AccessToken.getCurrentAccessToken().getPermissions();
+                if (permissions.contains(check_permission)) {
+                    fetchData();
+                } else {
+                    LoginManager loginManager = LoginManager.getInstance();
+                    loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            fetchData();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            String permissionMessage = "PlayMusic requires " + check_permission +
+                                    " permission to post on your wall";
+                            Toast.makeText(FacebookShareActivity.this, permissionMessage,
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+
+                        }
+                    });
+
+                    loginManager.logInWithPublishPermissions(FacebookShareActivity.this,
+                            Arrays.asList(check_permission));
+                }
+
+                Toast.makeText(FacebookShareActivity.this, "share button clicked",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void fetchData() {
+
+        StringBuilder field_parameter = new StringBuilder();
+        field_parameter.append("/me/feed?").append("message=").append(fbShareText.getText());
+        Log.i("TAGG", field_parameter.toString());
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", field_parameter.toString());
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), field_parameter.toString(),
+                null, HttpMethod.POST, new GraphRequest.Callback() {
+            @Override
+            public void onCompleted(GraphResponse response) {
+                if (response.getError() != null) {
+                    Toast.makeText(FacebookShareActivity.this,
+                            response.getError().getErrorMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(FacebookShareActivity.this,
+                            "shared on facebook", Toast.LENGTH_LONG).show();
+
+                    JSONObject jsonResponse = response.getJSONObject();
+                    try {
+                        postId.add(jsonResponse.getString("id"));
+                    } catch (JSONException je) {
+                        je.printStackTrace();
+                    }
+                }
+            }
+        }).executeAsync();
     }
 
     @Override

@@ -29,4 +29,5 @@
     <string name="name">Name</string>
     <string name="share_text">Share Text</string>
     <string name="search_by_name">Search (by name)</string>
+    <string name="share_on_facebook_wall">share on facebook wall</string>
 </resources>
