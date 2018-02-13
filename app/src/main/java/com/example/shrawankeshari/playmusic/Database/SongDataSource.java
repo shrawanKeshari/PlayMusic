@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.shrawankeshari.playmusic.FbShareField;
 import com.example.shrawankeshari.playmusic.OnlineMusic.SongsField;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class SongDataSource {
         dbHelper = new SongDBOpenHelper(context);
     }
 
-    //open the databse
+    //open the database
     public void open() {
         database = dbHelper.getWritableDatabase();
     }
@@ -120,7 +121,7 @@ public class SongDataSource {
     }
 
     //add the song to the history table with the updated time
-    public void addToHistory(SongsField songsField,long timeStamp){
+    public void addToHistory(SongsField songsField, long timeStamp) {
         ContentValues values = new ContentValues();
         values.put(SongDBOpenHelper.COLUMN_ID, songsField.getSongId());
         values.put(SongDBOpenHelper.COLUMN_TIME, String.valueOf(timeStamp));
@@ -130,17 +131,17 @@ public class SongDataSource {
     }
 
     //update the timeStamp of the song present in the table
-    public void updateToHistory(SongsField songsField, long timeStamp){
+    public void updateToHistory(SongsField songsField, long timeStamp) {
         ContentValues values = new ContentValues();
         values.put(SongDBOpenHelper.COLUMN_ID, songsField.getSongId());
         values.put(SongDBOpenHelper.COLUMN_TIME, String.valueOf(timeStamp));
 
         long result = database.update(SongDBOpenHelper.TABLE_HISTORY, values,
-                "id="+songsField.getSongId(),null);
+                "id=" + songsField.getSongId(), null);
     }
 
     //fetching the history of the user
-    public List<SongsField> findHistory(){
+    public List<SongsField> findHistory() {
         String query = "SELECT * FROM playMusic JOIN history ON " +
                 "playMusic.id = history.id ORDER BY history.time DESC";
 
@@ -177,7 +178,7 @@ public class SongDataSource {
         return true;
     }
 
-    public boolean findInHistory(long id){
+    public boolean findInHistory(long id) {
         String query = "SELECT * FROM " + SongDBOpenHelper.TABLE_HISTORY + " WHERE " +
                 SongDBOpenHelper.COLUMN_ID + "=" + "\"" + id + "\"";
 

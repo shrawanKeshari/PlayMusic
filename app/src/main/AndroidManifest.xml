@@ -64,7 +64,7 @@
         </activity>
         <activity
             android:name=".OfflineMusic.OfflineMusicActivity"
-            android:label="@string/title_activity_offline_music"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Facebook.FacebookLoginActivity"
@@ -75,7 +75,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.shrawankeshari.playmusic.OfflineMusic.OfflineMusicActivity" />
         </activity>
-        <activity android:name=".Facebook.FacebookShareActivity"></activity>
+        <activity android:name=".Facebook.FacebookShareActivity">
+
+        </activity>
     </application>
 
 </manifest>

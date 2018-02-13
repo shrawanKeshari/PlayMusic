@@ -30,4 +30,5 @@
     <string name="share_text">Share Text</string>
     <string name="search_by_name">Search (by name)</string>
     <string name="share_on_facebook_wall">share on facebook wall</string>
+    <string name="noItemMsg">No item to display (share song on facebook)</string>
 </resources>

@@ -16,7 +16,7 @@ public class SongDBOpenHelper extends SQLiteOpenHelper {
 
     //set the database version, if it is 1 means its initially created and if greater than 1 means
     // database is updated
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
 
     //creating the field for table in the database
     public static final String TABLE_MUSIC = "playMusic";
