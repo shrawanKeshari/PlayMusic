@@ -114,6 +114,7 @@ public class FacebookShareActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 publishPermission(null);
+                getFbPosts();
             }
         });
 
@@ -301,6 +302,7 @@ public class FacebookShareActivity extends AppCompatActivity {
                         String jsonSuccess = jsonObject.getString("success");
                         Toast.makeText(FacebookShareActivity.this,
                                 "post deleted successfully", Toast.LENGTH_SHORT).show();
+                        getFbPosts();
 
                     } catch (JSONException e) {
                         try {
