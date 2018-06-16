@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.shrawankeshari.playmusic.Facebook.FacebookLoginActivity;
+import com.example.shrawankeshari.playmusic.PortfolioActivity;
 import com.example.shrawankeshari.playmusic.R;
 import com.example.shrawankeshari.playmusic.OnlineMusic.StreamMusicActivity;
 
@@ -260,9 +261,10 @@ public class OfflineMusicActivity extends AppCompatActivity {
                 startActivity(facebookIntent);
                 return true;
 
-            case R.id.online_music:
-                Intent offlineIntent = new Intent(OfflineMusicActivity.this, StreamMusicActivity.class);
-                startActivity(offlineIntent);
+            //show the detail about me and my work
+            case R.id.portfolio:
+                Intent portfolioIntent = new Intent(OfflineMusicActivity.this, PortfolioActivity.class);
+                startActivity(portfolioIntent);
                 return true;
         }
 

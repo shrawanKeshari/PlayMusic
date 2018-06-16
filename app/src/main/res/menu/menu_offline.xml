@@ -19,8 +19,8 @@
 
     <!--activity display the list songs fetched from the web-->
     <item
-        android:id="@+id/online_music"
+        android:id="@+id/portfolio"
         android:orderInCategory="100"
-        android:title="@string/stream_online"
+        android:title="@string/portfolio"
         app:showAsAction="never" />
 </menu>
