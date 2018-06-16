@@ -11,7 +11,7 @@
     <string name="email">shrawankeshari19@gmail.com</string>
     <string name="Mobno">+91-8419818746</string>
     <string name="play_music">PLAY MUSIC</string>
-    <string name="tag_line">Now Play Music Offline Online and Share with Friend\'s</string>
+    <string name="tag_line">Now Play Music Offline and Share with Friend\'s</string>
     <string name="title_activity_offline_music">OfflineMusicActivity</string>
     <string name="refresh_display">refresh_display</string>
     <string name="all">ALL</string>
@@ -20,7 +20,6 @@
     <string name="offline_music">Offline Music</string>
     <string name="share">Share</string>
     <string name="share_on_facebook">Share on Facebook</string>
-    <string name="stream_online">Stream Online</string>
     <string name="facebook_app_id">212659572635873</string>
     <string name="fb_login_protocol_scheme">fb212659572635873</string>
     <string name="title_activity_facebook">FacebookActivity</string>
