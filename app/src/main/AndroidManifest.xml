@@ -51,7 +51,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.shrawankeshari.playmusic.OnlineMusic.StreamMusicActivity" />
+                android:value="com.example.shrawankeshari.playmusic.OfflineMusic.OfflineMusicActivity" />
         </activity>
         <activity
             android:name=".OfflineMusic.OfflineMusicActivity"
@@ -69,6 +69,11 @@
         <activity android:name=".Facebook.FacebookShareActivity">
 
         </activity>
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider212659572635873"
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -16,7 +16,7 @@
     <string name="refresh_display">refresh_display</string>
     <string name="all">ALL</string>
     <string name="favorite">FAVORITE</string>
-    <string name="portfolio">PORTFOLIO</string>
+    <string name="portfolio">Portfolio</string>
     <string name="offline_music">Offline Music</string>
     <string name="share">Share</string>
     <string name="share_on_facebook">Share on Facebook</string>
@@ -30,4 +30,5 @@
     <string name="search_by_name">Search (by name)</string>
     <string name="share_on_facebook_wall">share on facebook wall</string>
     <string name="noItemMsg">No item to display (share song on facebook)</string>
+    <string name="history">HISTORY</string>
 </resources>

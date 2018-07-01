@@ -24,9 +24,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.shrawankeshari.playmusic.Facebook.FacebookLoginActivity;
@@ -50,6 +52,7 @@ public class OfflineMusicActivity extends AppCompatActivity {
     private ImageView im_song_previous;
     private ImageView im_song_next;
     private int music_index;
+    private CheckBox checkBox;
 
     private MusicField shareMusic;
 
@@ -143,6 +146,7 @@ public class OfflineMusicActivity extends AppCompatActivity {
         tv_selected_track_artist = findViewById(R.id.song_artist_offline);
         im_song_previous = findViewById(R.id.song_previous_offline);
         im_song_next = findViewById(R.id.song_next_offline);
+//        checkBox = findViewById(R.id.checkbox_online);
 
         mediaPlayer = new MediaPlayer();
 
@@ -240,6 +244,16 @@ public class OfflineMusicActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.history:
+                Toast.makeText(OfflineMusicActivity.this,
+                        "History option is selected", Toast.LENGTH_LONG).show();
+                return true;
+
+            case R.id.favorite:
+                Toast.makeText(OfflineMusicActivity.this,
+                        "Favorite option is selected", Toast.LENGTH_LONG).show();
+                return true;
+
             case R.id.share:
                 String songName = shareMusic.getSong_path();
                 Intent intent = new Intent(Intent.ACTION_SEND);

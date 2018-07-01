@@ -10,12 +10,22 @@ import android.util.Log;
 
 public class MusicField implements Parcelable {
 
+    private long song_id;
     private String song_title;
     private byte[] song_image;
     private String song_path;
     private String song_artist;
     private String song_duration;
     private int whenNoImage;
+    private String create_timeStamp;
+
+    public long getSong_id() {
+        return song_id;
+    }
+
+    public void setSong_id(long song_id) {
+        this.song_id = song_id;
+    }
 
     public void setSong_title(String song_title) {
         this.song_title = song_title;
@@ -63,6 +73,14 @@ public class MusicField implements Parcelable {
 
     public int getWhenNoImage() {
         return whenNoImage;
+    }
+
+    public String getCreate_timeStamp() {
+        return create_timeStamp;
+    }
+
+    public void setCreate_timeStamp(String create_timeStamp) {
+        this.create_timeStamp = create_timeStamp;
     }
 
     public MusicField() {

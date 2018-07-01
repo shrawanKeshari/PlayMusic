@@ -3,6 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.shrawankeshari.downloadmanager.MainActivity">
 
+    <!--history item for displaying the list of history of songs listen by user-->
+    <item
+        android:id="@+id/history"
+        android:orderInCategory="0"
+        android:title="@string/history"
+        app:showAsAction="never" />
+
+    <!--favorite item for displaying the list of favorite songs-->
+    <item
+        android:id="@+id/favorite"
+        android:orderInCategory="0"
+        android:title="@string/favorite"
+        app:showAsAction="never" />
+
     <!--option to user to share music with other person via WhatsApp, Bluetooth etc-->
     <item
         android:id="@+id/share"

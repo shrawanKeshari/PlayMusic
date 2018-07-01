@@ -60,23 +60,29 @@
 
         <ImageView
             android:id="@+id/song_previous_offline"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_previous" />
 
         <ImageView
             android:id="@+id/song_control_offline"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical" />
 
         <ImageView
             android:id="@+id/song_next_offline"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_next" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical" />
 
     </LinearLayout>
 
