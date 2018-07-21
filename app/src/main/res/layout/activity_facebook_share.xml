@@ -84,13 +84,20 @@
         android:layout_margin="10dp"
         android:background="@android:color/transparent" />
 
-    <Button
-        android:id="@+id/share_button"
+    <!--    <Button
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:text="@string/share_on_facebook_wall" />-->
+
+    <com.facebook.share.widget.ShareButton
+        android:id="@+id/fb_share_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="@string/share_on_facebook_wall" />
+        android:layout_margin="10dp" />
 
     <TextView
         android:id="@+id/no_item_view"

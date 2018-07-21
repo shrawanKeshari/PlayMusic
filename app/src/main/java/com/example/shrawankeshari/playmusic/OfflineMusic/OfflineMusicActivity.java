@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -450,5 +451,4 @@ public class OfflineMusicActivity extends AppCompatActivity {
             im_song_control.setImageResource(R.drawable.ic_pause);
         }
     }
-
 }

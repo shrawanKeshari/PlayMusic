@@ -6,6 +6,8 @@
     <!--history item for displaying the list of history of songs listen by user-->
     <item
         android:id="@+id/history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orderInCategory="0"
         android:title="@string/history"
         app:showAsAction="never" />

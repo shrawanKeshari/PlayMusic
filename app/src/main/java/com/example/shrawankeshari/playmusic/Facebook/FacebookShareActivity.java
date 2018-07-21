@@ -30,6 +30,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
@@ -37,9 +38,18 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.share.Share;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareCameraEffectContent;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.ShareMedia;
+import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.model.ShareVideo;
+import com.facebook.share.widget.ShareButton;
+import com.facebook.share.widget.ShareDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,17 +62,22 @@ import java.util.Set;
 
 public class FacebookShareActivity extends AppCompatActivity {
 
+    private static String TAG = FacebookShareActivity.class.getName();
+
+
     ProfileTracker profileTracker;
     ImageView profilePic;
     TextView profileName, facebookId, noItemView;
     EditText fbShareText;
-    Button shareButton;
+    //    Button shareButton;
     MusicField musicField;
     ListView fbListView;
     List<String> postId;
     List<String> postName;
 
     CallbackManager callbackManager;
+    ShareDialog shareDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +93,7 @@ public class FacebookShareActivity extends AppCompatActivity {
         facebookId = findViewById(R.id.facebook_id);
         profileName = findViewById(R.id.facebook_name);
         fbShareText = findViewById(R.id.fb_share_text);
-        shareButton = findViewById(R.id.share_button);
+//        shareButton = findViewById(R.id.fb_share_button);
         fbListView = findViewById(R.id.fb_list_view);
         noItemView = findViewById(R.id.no_item_view);
         postId = new ArrayList<>();
@@ -115,16 +130,60 @@ public class FacebookShareActivity extends AppCompatActivity {
         fbShareText.setText(sb);
         fbShareText.setSelection(fbShareText.getText().length());
 
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                publishPermission(null);
-                getFbPosts();
-            }
-        });
+//        shareButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                publishPermission(null);
+//                getFbPosts();
+//            }
+//        });
 
-        readPermission();
+        SharePhoto photo;
+        byte[] song_image = musicField.getSong_image();
+        if (song_image != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(song_image, 0, song_image.length);
+            photo = new SharePhoto.Builder()
+                    .setBitmap(bitmap)
+                    .setCaption("Testing")
+                    .build();
+        } else {
+            photo = new SharePhoto.Builder()
+                    .setCaption("Testing")
+                    .build();
+        }
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        ShareButton shareButton = findViewById(R.id.fb_share_button);
+        shareButton.setShareContent(content);
+
+        shareDialog = new ShareDialog(this);
+        shareDialog.registerCallback(callbackManager, callback);
+
+
+//        readPermission();
     }
+
+    private FacebookCallback<Sharer.Result> callback = new FacebookCallback<Sharer.Result>() {
+        @Override
+        public void onSuccess(Sharer.Result result) {
+            Log.v(TAG, "Successfully posted");
+            Toast.makeText(FacebookShareActivity.this, "Successfully posted", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onCancel() {
+            Log.v(TAG, "Sharing cancelled");
+            Toast.makeText(FacebookShareActivity.this, "Sharing cancelled", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+            Log.v(TAG, error.getMessage());
+            Toast.makeText(FacebookShareActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
 
     private void publishPermission(final String id) {
         Set permissions = AccessToken.getCurrentAccessToken().getPermissions();
